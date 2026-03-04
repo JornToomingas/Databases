@@ -1,4 +1,6 @@
-<?php include("config.php"); ?>
+<?php include("config.php"); 
+session_start();
+?>
 
 <!doctype html>
 <html lang="en">
@@ -11,9 +13,9 @@
       <style>
       .hero {
         height: 300px;
-        /* background-image: url("https://picsum.photos/1200/400");
+         background-image: url("#");
         background-size: cover;
-        background-position: center; */
+        background-position: center; 
       }
     </style>
   </head>
@@ -21,14 +23,14 @@
 <!-- menüü -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary  border-bottom">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="#">Autorent</a>
+    <a class="navbar-brand fw-bold" href="index.php">Autorent</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Avaleht</a>
+          <a class="nav-link active" aria-current="page" href="index.php">Avaleht</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Autod</a>
@@ -42,9 +44,14 @@
 
       </ul>
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Otsi..." aria-label="Search"/>
+        <input class="form-control me-2" type="search" placeholder="Otsi..." aria-label="Search" name="search">
         <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
       </form>
+      <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
+          <a href="admin/logout.php" class="btn btn-dark btn-sm ms-2">Logout</a>
+      <?php else: ?>
+          <a href="admin/login.php" class="btn btn-dark btn-sm ms-2">Logi sisse</a>
+      <?php endif; ?>
     </div>
   </div>
 </nav>
@@ -68,9 +75,14 @@
 <!-- /hero -->
 
 <?php
-$otsi = "audi";
+
 $paring = 'SELECT * FROM cars'; 
-$paring .= ' WHERE mark LIKE "%'.$otsi.'%"';
+
+if (isset($_GET["search"])) {
+  $otsi = $_GET["search"];
+  $paring .= ' WHERE mark LIKE "%'.$otsi.'%"';
+}
+
 $paring .= ' LIMIT 8';
 $valjund = mysqli_query($yhendus, $paring);
 // var_dump($valjund);
@@ -79,6 +91,22 @@ $valjund = mysqli_query($yhendus, $paring);
 
 <!-- autode kaardid -->
  <div class="container">
+
+  <?php
+  // Alert kast, kui autot ei leitud
+    if ($result=mysqli_query($yhendus,$paring)){
+      $rowcount=mysqli_num_rows($result);
+      if ($rowcount == 0) {
+       echo '
+       <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Otsitud autot ei leitud
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+       ';
+      }
+    }
+  ?>
+  
   <div class="row">
     <?php
 while($rida = mysqli_fetch_row($valjund)){ 
@@ -95,10 +123,10 @@ while($rida = mysqli_fetch_row($valjund)){
           
           <p class="card-text text-secondary"><?php echo $rida[2]; ?></p>
           <p class="card-text">
-          Mootor: <?php echo $rida[3]; ?><br>
-          Kütus: <?php echo $rida[4]; ?><br>
+          Mootor: <?php echo $rida[8]; ?><br>
+          Kütus: <?php echo $rida[9]; ?><br>
           Hind: <?php echo $rida[5]; ?>€/päev</p>
-          <a href="#" class="btn btn-dark w-100">Rendi</a>
+          <a href="auto.php?id=<?php echo $rida[0]; ?>" class="btn btn-dark w-100">Rendi</a>
         </div>
       </div>
     </div>
