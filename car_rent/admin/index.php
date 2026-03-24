@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_id'])) {
 }
 
 $edit_id = isset($_GET['edit_id']) ? intval($_GET['edit_id']) : 0;
-$result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id DESC");
+$result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id ASC");
 ?>
 
 <!doctype html>

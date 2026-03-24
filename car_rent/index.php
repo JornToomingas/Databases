@@ -42,6 +42,13 @@ session_start();
           <a class="nav-link" href="#">Kontakt</a>
         </li>
 
+      <?php
+        $paring = "SELECT * FROM cars";
+        $valjund = mysqli_query($yhendus, $paring);
+        $rida = mysqli_fetch_row($valjund);
+        // var_dump($rida);
+      ?>
+      
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Otsi..." aria-label="Search" name="search">
@@ -125,7 +132,7 @@ while($rida = mysqli_fetch_row($valjund)){
           <p class="card-text">
           Mootor: <?php echo $rida[8]; ?><br>
           Kütus: <?php echo $rida[9]; ?><br>
-          Hind: <?php echo $rida[5]; ?>€/päev</p>
+          Hind: <?php echo $rida[10]; ?>€/päev</p>
           <a href="auto.php?id=<?php echo $rida[0]; ?>" class="btn btn-dark w-100">Rendi</a>
         </div>
       </div>
