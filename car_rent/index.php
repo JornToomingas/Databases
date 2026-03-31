@@ -41,6 +41,9 @@ session_start();
         <li class="nav-item">
           <a class="nav-link" href="#">Kontakt</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="regamine.php">Konto</a>
+        </li>
 
       <?php
         $paring = "SELECT * FROM cars";

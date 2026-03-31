@@ -92,12 +92,11 @@ $result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id ASC");
                     <?php while ($auto = mysqli_fetch_assoc($result)): ?>
 
                     <?php if ($edit_id === (int)$auto['id']): ?>
-                    <!-- Muuda -->
                     <tr class="table-warning">
                     <form method="POST">
 
                         <td style="width:120px;">
-                            <img src="<?php echo htmlspecialchars($auto['image']); ?>"
+                            <img src="https://loremflickr.com/600/350/<?php echo $rida[1]; ?>" class="card-img-top" alt="auto"
                                  class="img-fluid rounded-3 shadow-sm"
                                  style="max-height:70px;">
                         </td>
@@ -139,39 +138,31 @@ $result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id ASC");
                     </tr>
 
                     <?php else: ?>
-                    <!-- Tava -->
                     <tr>
 
-                        <td style="width:120px;">
-                            <img src="<?php echo htmlspecialchars($auto['image']); ?>"
-                                 class="img-fluid rounded-3 shadow-sm"
-                                 style="max-height:70px;">
+                        <td style="width:200px;">
+                            <img src="https://loremflickr.com/200/200/<?php echo $auto['mark']; ?>" class="card-img-top" alt="auto">
                         </td>
 
                         <td>
-                            <div class="fw-semibold">
-                                <?php echo htmlspecialchars($auto['mark'].' '.$auto['model']); ?>
-                            </div>
+                            <?php echo htmlspecialchars($auto['mark'].' '.$auto['model']); ?>
                         </td>
 
                         <td>
-                            <span class="badge bg-light text-dark border">
-                                <?php echo htmlspecialchars($auto['motor']); ?>
-                            </span>
+                            <?php echo htmlspecialchars($auto['motor']); ?>
+
                         </td>
 
                         <td>
-                            <span class="badge bg-secondary">
-                                <?php echo htmlspecialchars($auto['fuel']); ?>
-                            </span>
+                            <?php echo htmlspecialchars($auto['fuel']); ?>
                         </td>
 
-                        <td class="fw-semibold">
+                        <td>
                             <?php echo htmlspecialchars($auto['price']); ?> €
-                            <small class="text-muted">/päev</small>
+                            <small>/päev</small>
                         </td>
 
-                        <td class="text-muted" style="max-width:220px;">
+                        <td>
                             <?php echo htmlspecialchars($auto['description']); ?>
                         </td>
 

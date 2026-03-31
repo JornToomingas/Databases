@@ -8,9 +8,8 @@ if (!isset($_GET["id"])) {
 }
 
 $car_id = intval($_GET["id"]);
-$message = ""; // Siia salvestame rohelise või punase teate
+$message = ""; 
 
-// Võtame auto andmed Sinu tabeli väljadega
 $stmt = mysqli_prepare($yhendus, "SELECT * FROM cars WHERE id = ?");
 mysqli_stmt_bind_param($stmt, "i", $car_id);
 mysqli_stmt_execute($stmt);
@@ -21,7 +20,6 @@ if (!$auto) {
     exit("Autot ei leitud!");
 }
 
-// Kui vajutatakse "Broneeri" nuppu
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_date'], $_POST['end_date'])) {
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
@@ -32,14 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_date'], $_POST[
     if ($start > $end) {
         $message = "<div class='alert alert-danger'>Alguskuupäev peab olema enne lõppkuupäeva.</div>";
     } else {
-        // Arvutame päevad ja hinna (Sinu 'price' välja põhjal)
+
         $days = $start->diff($end)->days + 1;
         $total_price = $days * $auto['price'];
 
-        // Kasutaja ID (kui sessioonis pole, paneme prooviks 1)
         $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
 
-        // Kontrollime saadavust (Etapp 9 loogika)
         $check = mysqli_prepare($yhendus, "SELECT id FROM reservations WHERE car_id = ? AND status = 'active' AND (? <= end_date) AND (? >= start_date)");
         mysqli_stmt_bind_param($check, "iss", $car_id, $end_date, $start_date);
         mysqli_stmt_execute($check);
@@ -48,12 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_date'], $_POST[
         if (mysqli_num_rows($check_result) > 0) {
             $message = "<div class='alert alert-danger'>See auto on juba sel ajal broneeritud.</div>";
         } else {
-            // SALVESTAME BRONEERINGU
+
             $stmt2 = mysqli_prepare($yhendus, "INSERT INTO reservations (user_id, car_id, start_date, end_date, total_price, status) VALUES (?, ?, ?, ?, ?, 'active')");
             mysqli_stmt_bind_param($stmt2, "iissd", $user_id, $car_id, $start_date, $end_date, $total_price);
             
             if(mysqli_stmt_execute($stmt2)) {
-                // ROHELINE SÕNUM
+
                 $message = "<div class='alert alert-success mt-3'>✅ Broneering õnnestus! Koguhind: " . number_format($total_price, 2) . " €</div>";
             }
         }
@@ -100,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['start_date'], $_POST[
                 </div>
                 <button type="submit" class="btn btn-success w-100">Broneeri kohe</button>
             </form>
-            <a href="index.php" class="btn btn-secondary mt-3">Tagasi</a>
+            <a href="index.php" class="btn btn-secondary ">Tagasi</a>
         </div>
     </div>
 </div>
