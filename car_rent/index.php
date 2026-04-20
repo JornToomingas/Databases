@@ -20,7 +20,7 @@ session_start();
     </style>
   </head>
   <body>
-<!-- menüü -->
+
   <nav class="navbar navbar-expand-lg bg-body-tertiary  border-bottom">
   <div class="container">
     <a class="navbar-brand fw-bold" href="index.php">Autorent</a>

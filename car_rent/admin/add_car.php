@@ -19,19 +19,16 @@ include("../config.php");
 
 <div class="container py-4">
 
-    <!-- Ülemine riba -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0">Autorent admin</h4>
         <a href="../logout.php" class="btn btn-outline-secondary btn-sm">Logout</a>
     </div>
 
-    <!-- Pealkiri + tagasi -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">Lisa auto</h5>
         <a href="index.php" class="btn btn-outline-secondary btn-sm">Tagasi</a>
     </div>
 
-    <!-- Vorm -->
     <div class="card shadow-sm">
         <div class="card-body p-4">
 
