@@ -8,16 +8,15 @@ $toastClass = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = "user";
 
-    // FIX: match your actual input names
     $firstname = $_POST['firstname'];
-    $lastname  = $_POST['name']; // your form uses "name"
+    $lastname  = $_POST['name'];
     $email     = $_POST['email'];
     $phone     = $_POST['phone'];
     $password  = $_POST['password'];
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Check if email already exists
+    // kas email on olemas juba
     $checkEmailStmt = $yhendus->prepare("SELECT email FROM users WHERE email = ?");
     $checkEmailStmt->bind_param("s", $email);
     $checkEmailStmt->execute();
@@ -27,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Email ID already exists";
         $toastClass = "#007bff";
     } else {
-        // FIX: correct columns + correct bind count
+  
         $stmt = $yhendus->prepare(
             "INSERT INTO users (first_name, last_name, email, phone, password_hash) VALUES (?, ?, ?, ?, ?)"
         );
@@ -46,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $checkEmailStmt->close();
 
-    // FIX: correct connection variable
     $yhendus->close();
 }
 ?>

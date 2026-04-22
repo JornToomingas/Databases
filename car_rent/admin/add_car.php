@@ -31,7 +31,6 @@ include("../config.php");
 
     <div class="card shadow-sm">
         <div class="card-body p-4">
-
             <form action="save_car.php" method="POST" enctype="multipart/form-data">
                 <div class="row g-3">
 
@@ -84,12 +83,9 @@ include("../config.php");
 
                 <button type="submit" class="btn btn-dark">Salvesta</button>
                 <a href="index.php" class="btn btn-outline-secondary">Tühista</a>
-
             </form>
-
         </div>
     </div>
-
 </div>
 
 </body>

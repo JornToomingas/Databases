@@ -67,7 +67,6 @@ session_start();
 </nav>
 <!-- /menüü -->
 
-<!-- hero -->
  <div class="container py-4">
       <div class="hero bg-body-tertiary p-4">
         <div class="row  d-flex">
@@ -82,7 +81,6 @@ session_start();
         </div>
       </div>
     </div>
-<!-- /hero -->
 
 <?php
 
@@ -103,7 +101,7 @@ $valjund = mysqli_query($yhendus, $paring);
  <div class="container">
 
   <?php
-  // Alert kast, kui autot ei leitud
+  // kui ei ole leiud
     if ($result=mysqli_query($yhendus,$paring)){
       $rowcount=mysqli_num_rows($result);
       if ($rowcount == 0) {
