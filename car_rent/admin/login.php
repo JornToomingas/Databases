@@ -11,8 +11,8 @@ session_start();
 
 <body class="bg-light">
 
-<div class="container mt-5" style="max-width:400px;">
-<h3 class="mb-3">Admin login</h3>
+<div class="container mt-5" style="max-width:500px;">
+<h2 class="mb-3">Admin login</h2>
 
 <form method="POST">
 

@@ -7,11 +7,13 @@ $toastClass = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $role = "user";
-    $firstname = $_POST['first_name'];
-    $lastname = $_POST['last_name'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $password = $_POST['password'];
+
+    // FIX: match your actual input names
+    $firstname = $_POST['firstname'];
+    $lastname  = $_POST['name']; // your form uses "name"
+    $email     = $_POST['email'];
+    $phone     = $_POST['phone'];
+    $password  = $_POST['password'];
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
@@ -23,25 +25,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($checkEmailStmt->num_rows > 0) {
         $message = "Email ID already exists";
-        $toastClass = "#007bff"; // Primary color
+        $toastClass = "#007bff";
     } else {
-        // Prepare and bind
-        $stmt = $yhendus->prepare("INSERT INTO users (first_name, email, password_hash) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $firstname,  $lastname, $email, $phone, $hashedPassword);
+        // FIX: correct columns + correct bind count
+        $stmt = $yhendus->prepare(
+            "INSERT INTO users (first_name, last_name, email, phone, password_hash) VALUES (?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param("sssss", $firstname, $lastname, $email, $phone, $hashedPassword);
 
         if ($stmt->execute()) {
             $message = "Account created successfully";
-            $toastClass = "#28a745"; // Success color
+            $toastClass = "#28a745";
         } else {
             $message = "Error: " . $stmt->error;
-            $toastClass = "#dc3545"; // Danger color
+            $toastClass = "#dc3545";
         }
 
         $stmt->close();
     }
 
     $checkEmailStmt->close();
-    $conn->close();
+
+    // FIX: correct connection variable
+    $yhendus->close();
 }
 ?>
 
@@ -64,16 +70,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 </head>
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary  border-bottom">
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
   <div class="container">
     <a class="navbar-brand fw-bold" href="index.php">Autorent</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.php">Avaleht</a>
+          <a class="nav-link active" href="index.php">Avaleht</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Autod</a>
@@ -87,9 +94,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <li class="nav-item">
           <a class="nav-link" href="regamine.php">Konto</a>
         </li>
-
-
-
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <body class="bg-light">
     <div class="container p-5 d-flex flex-column align-items-center">

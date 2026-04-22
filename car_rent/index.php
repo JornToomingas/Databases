@@ -140,7 +140,6 @@ while($rida = mysqli_fetch_row($valjund)){
         </div>
       </div>
     </div>
-    <!-- /kaart -->
    <?php } ?>
 
  </div>
