@@ -1,11 +1,33 @@
 <?php
+
 session_start();
+
+include("../config.php");
+
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     header("Location: ../index.php");
     exit();
 }
 
-include("../config.php");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $mark = $_POST['mark'];
+    $model = $_POST['model'];
+    $motor = $_POST['motor'];
+    $fuel = $_POST['fuel'];
+    $price = $_POST['price'];
+
+    $sql = "INSERT INTO cars (mark, model, motor, fuel, price)
+            VALUES ('$mark', '$model', '$motor', '$fuel', '$price')";
+
+if (mysqli_query($yhendus, $sql)) {
+    $message = "Auto salvestatud!";
+} else {
+    $message = "Viga: " . mysqli_error($yhendus);
+}
+    }
+
 ?>
 
 <!doctype html>
@@ -30,8 +52,8 @@ include("../config.php");
     </div>
 
     <div class="card shadow-sm">
-        <div class="card-body p-4">
-            <form action="save_car.php" method="POST" enctype="multipart/form-data">
+        <div class="card-body p-4">       
+            <form method="POST">
                 <div class="row g-3">
 
                     <!-- Mark -->

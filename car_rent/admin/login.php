@@ -38,7 +38,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 
         $_SESSION['is_admin'] = true;
 
-        header("Location: index.php"); // admin/index.php
+        header("Location: index.php"); // admnini index
         exit();
 
     } else {
