@@ -1,7 +1,6 @@
 <?php
 include("config.php");
 
-// Delete
 if(isset($_POST['delete_id'])){
     $id = $_POST['delete_id'];
 
@@ -11,7 +10,6 @@ if(isset($_POST['delete_id'])){
     exit;
 }
 
-// Update
 if(isset($_POST['update_id'])){
     $id = $_POST['update_id'];
 
