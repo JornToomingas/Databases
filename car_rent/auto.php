@@ -80,10 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 }
-
-//UPDATE ja DELETE siin pole
-//UPDATE - kuupaevade muutmine
-//DELETE - broneeringu tuhistamine
 ?>
 
 <!doctype html>
