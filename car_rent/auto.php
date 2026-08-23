@@ -2,7 +2,7 @@
 include("config.php");
 session_start();
 
-// kui ID puudub, tagasi avalehele
+//kui id puudub urlis, tagasi avalehele
 if (!isset($_GET["id"])) {
     header("Location: index.php");
     exit();
@@ -11,7 +11,7 @@ if (!isset($_GET["id"])) {
 $car_id = (int)$_GET["id"];
 $message = "";
 
-// auto andmed
+//READ - toome ühe auto andmed id järgi
 $q = mysqli_prepare($yhendus, "SELECT * FROM cars WHERE id=?");
 mysqli_stmt_bind_param($q, "i", $car_id);
 mysqli_stmt_execute($q);
@@ -22,7 +22,7 @@ if (!$auto) {
     die("Autot ei leitud");
 }
 
-// kui vorm saadetud
+//kui vorm on ära saadetud
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $start_date = $_POST["start_date"] ?? "";
@@ -37,12 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $message = "<div class='alert alert-danger'>Kuupäevad on valed.</div>";
         } else {
 
+            //arvutame mitu päeva ja kui palju maksma läheb
             $days = $start->diff($end)->days + 1;
             $total = $days * $auto["price"];
 
             $user_id = $_SESSION["user_id"] ?? 1;
 
-            // kontroll kas juba broneeritud
+            //READ - kontrollime kas auto on juba sel ajal broneeritud
             $check = mysqli_prepare($yhendus,
                 "SELECT id FROM reservations 
                  WHERE car_id=? 
@@ -59,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $message = "<div class='alert alert-danger'>See aeg on juba kinni.</div>";
             } else {
 
+                //CREATE - lisame uue broneeringu (INSERT)
                 $ins = mysqli_prepare($yhendus,
                     "INSERT INTO reservations 
                      (user_id, car_id, start_date, end_date, total_price, status) 
@@ -78,6 +80,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 }
+
+//UPDATE ja DELETE selles failis ei ole
+//UPDATE oleks nt broneeringu kuupäevade muutmine (UPDATE reservations SET ... WHERE id=?)
+//DELETE oleks broneeringu tühistamine (DELETE FROM reservations WHERE id=? või UPDATE status='cancelled')
 ?>
 
 <!doctype html>
