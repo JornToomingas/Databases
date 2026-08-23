@@ -77,3 +77,15 @@ UPDATE → UPDATE
 DELETE → DELETE
 
 
+SELECT * FROM car_rent;              -- näita kõike
+SELECT make FROM car_rent;           -- näita marki
+
+INSERT INTO car_rent (make)
+VALUES ('Ferrari');                  -- lisa
+
+UPDATE car_rent
+SET make = 'BMW'
+WHERE id = 1;                        -- muuda
+
+DELETE FROM car_rent
+WHERE id = 1;                        -- kustuta
