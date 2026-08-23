@@ -1,5 +1,6 @@
 <?php
 session_start();
+//kui pole admin, siis vali gaa
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     header("Location: ../index.php");
     exit();
@@ -7,7 +8,7 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
 
 include("../config.php"); 
 
-/* KUSTUTAMINE */
+//DELETE - kustutame auto
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $delete_id = intval($_POST['delete_id']);
     $stmt = mysqli_prepare($yhendus, "DELETE FROM cars WHERE id = ?");
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     exit();
 }
 
-/* UUENDAMINE */
+//UPDATE - muudame auto andmeid
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_id'])) {
 
     $id = intval($_POST['update_id']);
@@ -38,7 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_id'])) {
     exit();
 }
 
+//kas mõnda rida hetkel muudetakse (näitab siis vormi selle rea kohal)
 $edit_id = isset($_GET['edit_id']) ? intval($_GET['edit_id']) : 0;
+
+//READ - kõik autod tabelisse
 $result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id ASC");
 ?>
 
@@ -92,13 +96,14 @@ $result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id ASC");
                     <?php while ($auto = mysqli_fetch_assoc($result)): ?>
 
                     <?php if ($edit_id === (int)$auto['id']): ?>
+                    <!-- see rida on hetkel muutmisel, näitame inputid rea peal -->
                     <tr class="table-warning">
                     <form method="POST">
 
                         <td style="width:120px;">
-                            <img src="https://loremflickr.com/600/350/<?php echo $rida[1]; ?>" class="card-img-top" alt="auto"
+                            <img src="https://loremflickr.com/600/350/<?php echo $auto['mark']; ?>"
                                  class="img-fluid rounded-3 shadow-sm"
-                                 style="max-height:70px;">
+                                 style="max-height:70px;" alt="auto">
                         </td>
 
                         <td>
@@ -138,10 +143,11 @@ $result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id ASC");
                     </tr>
 
                     <?php else: ?>
+                    <!-- tavaline rida, lihtsalt näitame andmeid -->
                     <tr>
 
                         <td style="width:200px;">
-                            <img src="https://loremflickr.com/200/200/<?php echo $auto['mark']; ?>" class="card-img-top" alt="auto">
+                            <img src="https://loremflickr.com/200/200/<?php echo $auto['mark']; ?>" alt="auto">
                         </td>
 
                         <td>
@@ -150,7 +156,6 @@ $result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id ASC");
 
                         <td>
                             <?php echo htmlspecialchars($auto['motor']); ?>
-
                         </td>
 
                         <td>
@@ -167,7 +172,7 @@ $result = mysqli_query($yhendus, "SELECT * FROM cars ORDER BY id ASC");
                         </td>
 
                         <td class="text-end">
-                          <div class="btn-group" role="group" aria-label="Basic example">
+                          <div class="btn-group" role="group">
                               <a href="index.php?edit_id=<?php echo $auto['id']; ?>"
                                class="btn btn-outline-primary btn-sm me-1">
                                 Muuda
