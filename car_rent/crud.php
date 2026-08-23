@@ -35,7 +35,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	exit;
 }
  
-//Kas me muudame midagi??? :d
+//Kontrollib kas me muudame midagi :d
 $editRow = array("id"=>"", "mark"=>"", "model"=>"", "motor"=>"", "fuel"=>"", "price"=>"");
 if(isset($_GET['edit'])){
 	$id = $_GET['edit'];
@@ -77,7 +77,7 @@ Price: <input type="text" name="price" value="<?php echo $editRow['price']; ?>">
 <br>
 <hr>
  
-<h2>All Cars</h2>
+<h2>Kõik autod</h2>
  
 <table border="1" cellpadding="6">
 <tr>
