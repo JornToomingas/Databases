@@ -60,7 +60,7 @@ $conn->query($sql);
 // põhilised asjad
 
 // $ = muutuja
-// echo = näita
+// echo = näita / print
 // . = ühenda tekst
 // == = võrdne
 // === = täpselt võrdne
