@@ -13,7 +13,7 @@ session_start();
       <style>
       .hero {
         height: 300px;
-         background-image: url("#");
+        background-image: url("#");
         background-size: cover;
         background-position: center; 
       }
@@ -21,7 +21,7 @@ session_start();
   </head>
   <body>
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary  border-bottom">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
   <div class="container">
     <a class="navbar-brand fw-bold" href="index.php">Autorent</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,19 +44,13 @@ session_start();
         <li class="nav-item">
           <a class="nav-link" href="regamine.php">Konto</a>
         </li>
-
-      <?php
-        $paring = "SELECT * FROM cars";
-        $valjund = mysqli_query($yhendus, $paring);
-        $rida = mysqli_fetch_row($valjund);
-        // var_dump($rida);
-      ?>
-      
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Otsi..." aria-label="Search" name="search">
         <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
       </form>
+
+      //Kas on admin, logi sisse ja logi välja
       <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true): ?>
           <a href="admin/logout.php" class="btn btn-dark btn-sm ms-2">Logout</a>
       <?php else: ?>
@@ -69,7 +63,7 @@ session_start();
 
  <div class="container py-4">
       <div class="hero bg-body-tertiary p-4">
-        <div class="row  d-flex">
+        <div class="row d-flex">
           <div class="col-sm-6">
             <h1 class="fw-bold">Rendi<br>auto<br>soodsalt!</h1>
             <p class="text-secondary">Lai valik autosid igaks olukorraks</p>
@@ -83,43 +77,38 @@ session_start();
     </div>
 
 <?php
-
-$paring = 'SELECT * FROM cars'; 
-
-if (isset($_GET["search"])) {
-  $otsi = $_GET["search"];
-  $paring .= ' WHERE mark LIKE "%'.$otsi.'%"';
+//Otsing
+$otsi = "";
+if(isset($_GET['search'])){
+	$otsi = $_GET['search'];
 }
 
-$paring .= ' LIMIT 8';
-$valjund = mysqli_query($yhendus, $paring);
-// var_dump($valjund);
+//kui otsiti, siis päring otsinguga, muidu tavaline päring
+if($otsi != ""){
+	$paring = "SELECT * FROM cars WHERE mark LIKE '%$otsi%' LIMIT 8";
+}else{
+	$paring = "SELECT * FROM cars LIMIT 8";
+}
 
+$valjund = mysqli_query($yhendus, $paring);
+$arv = mysqli_num_rows($valjund);
 ?>
 
 <!-- autode kaardid -->
  <div class="container">
 
-  <?php
-  // kui ei ole leiud
-    if ($result=mysqli_query($yhendus,$paring)){
-      $rowcount=mysqli_num_rows($result);
-      if ($rowcount == 0) {
-       echo '
-       <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        Otsitud autot ei leitud
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-       ';
-      }
-    }
-  ?>
-  
+  <?php if($arv == 0){ ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      Otsitud autot ei leitud
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php } ?>
+
   <div class="row">
     <?php
-while($rida = mysqli_fetch_row($valjund)){ 
+    while($rida = mysqli_fetch_row($valjund)){ 
     ?>
-    <!-- kaart --> 
+    <!-- kaart -->
     <div class="col-sm-3">
       <div class="card my-2" style="width: 19rem;">
         <img src="https://loremflickr.com/600/350/<?php echo $rida[1]; ?>" class="card-img-top" alt="auto">
@@ -128,7 +117,7 @@ while($rida = mysqli_fetch_row($valjund)){
             <div class="col"><h5 class="card-title"><?php echo $rida[1]; ?></h5></div>
             <div class="col text-end"><i class="bi bi-heart"></i></div>
           </div>
-          
+
           <p class="card-text text-secondary"><?php echo $rida[2]; ?></p>
           <p class="card-text">
           Mootor: <?php echo $rida[8]; ?><br>
